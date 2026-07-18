@@ -1,0 +1,115 @@
+{
+  "users": [
+    {
+      "username": "marcello",
+      "password": "Password",
+      "partner": "hayley",
+      "lastLogin": "2026-07-18T00:30:58.924Z",
+      "campsiteId": "camp_1784335220000",
+      "lastPuzzleDate": "2026-07-18"
+    },
+    {
+      "username": "hayley",
+      "password": "poop",
+      "partner": "marcello",
+      "lastLogin": "2026-07-18T00:40:04.908Z",
+      "campsiteId": "camp_1784335220000",
+      "lastPuzzleDate": "2026-07-18"
+    }
+  ],
+  "campsites": [
+    {
+      "id": "camp_1784335220000",
+      "members": [
+        "hayley",
+        "marcello"
+      ],
+      "fireLevel": 20,
+      "lastActivity": "2026-07-17T01:08:19.083Z",
+      "messages": [
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:43:44.522Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:43:51.518Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:43:52.664Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:43:57.943Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:43:59.019Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:45:09.105Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T00:45:09.850Z",
+          "readBy": []
+        },
+        {
+          "sender": "hayley",
+          "text": "Wuv u",
+          "timestamp": "2026-07-18T00:49:38.720Z",
+          "readBy": [
+            "hayley"
+          ]
+        },
+        {
+          "sender": "marcello",
+          "text": "Love you",
+          "timestamp": "2026-07-18T00:50:03.191Z",
+          "readBy": [
+            "marcello"
+          ]
+        },
+        {
+          "sender": "hayley",
+          "text": "Poopy head",
+          "timestamp": "2026-07-18T00:51:31.591Z",
+          "readBy": [
+            "hayley"
+          ]
+        },
+        {
+          "sender": "marcello",
+          "text": "Hi there",
+          "timestamp": "2026-07-18T00:51:48.924Z",
+          "readBy": [
+            "marcello"
+          ]
+        },
+        {
+          "sender": "marcello",
+          "text": "esfdsfdsfdsf",
+          "timestamp": "2026-07-18T00:52:19.555Z",
+          "readBy": [
+            "marcello"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keep the Fire Light</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <div class="cozy-card">
+                <h1>Keep the Fire Light</h1>
+                <p>Enter your name to enter the woods.</p>
+                <input type="text" id="username-input" placeholder="Your Name">
+                <input type="password" id="password-input" placeholder="Password">
+                <button id="login-btn">Enter</button>
+            </div>
+        </div>
+
+        <!-- Pairing Screen -->
+        <div id="pairing-screen" class="screen hidden">
+            <div class="cozy-card">
+                <h1>Find Your Partner</h1>
+                <p>Enter your partner's name to link your campsites.</p>
+                <input type="text" id="partner-input" placeholder="Partner's Name">
+                <button id="pair-btn">Link Campsites</button>
+                <p class="note">Make sure they have logged in at least once.</p>
+            </div>
+        </div>
+
+        <!-- Main Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div id="campfire-container">
+                <div id="sky"></div>
+                <div id="trees"></div>
+                <div id="ground"></div>
+                <div id="campfire">
+                    <div class="flame" id="main-flame"></div>
+                    <div class="logs"></div>
+                    <div class="embers"></div>
+                </div>
+                
+                <div id="charcoal-tool" class="hidden">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span>Charcoal</span>
+                </div>
+
+                <div id="message-indicator" class="hidden">
+                    <div class="ash-pile" id="ash-pile">
+                        <canvas id="ash-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ui-overlay">
+                <div id="status-bar">
+                    <span id="user-display"></span> & <span id="partner-display"></span>
+                    <button id="logout-btn" style="margin-left: 10px; padding: 5px 10px; font-size: 0.7rem;">Logout</button>
+                </div>
+                <button id="puzzle-trigger-btn">Tend the Fire</button>
+            </div>
+        </div>
+
+        <!-- Puzzle Modal -->
+        <div id="puzzle-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Daily Word</h2>
+                <div id="wordle-grid"></div>
+                <div id="keyboard"></div>
+            </div>
+        </div>
+
+        <!-- Message Modal -->
+        <div id="message-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Write a Note</h2>
+                <textarea id="message-input" placeholder="Type a short note..." maxlength="140"></textarea>
+                <button id="send-message-btn">Toss into Fire</button>
+            </div>
+        </div>
+
+        <!-- Interviewer Debug Panel -->
+        <div id="debug-panel">
+            <button id="toggle-debug"><i class="fas fa-bug"></i></button>
+            <div id="debug-controls" class="hidden">
+                <button onclick="debugFastForward()">Fast-Forward 24h</button>
+                <button onclick="debugResetPuzzle()">Reset Daily Word</button>
+                <button onclick="debugSimulateMessage()">Simulate Partner Message</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

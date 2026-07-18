@@ -1,0 +1,342 @@
+:root {
+    --bg-dark: #0a0f14;
+    --forest-green: #1a2e1a;
+    --fire-orange: #ff6f00;
+    --fire-yellow: #ffca28;
+    --parchment: #f4e4bc;
+    --cozy-card-bg: rgba(255, 255, 255, 0.05);
+    --text-color: #e0e0e0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+.screen {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.cozy-card {
+    background: var(--cozy-card-bg);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+}
+
+h1 {
+    margin-bottom: 1rem;
+    color: var(--fire-orange);
+}
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background: #1a1a1a;
+    color: white;
+}
+
+button {
+    background: var(--fire-orange);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #e65100;
+}
+
+/* Campfire Scene */
+#campfire-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #05080c 0%, #0a0f14 100%);
+    z-index: 1;
+}
+
+#ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30%;
+    background: #1a1a1a;
+    border-top: 2px solid #222;
+}
+
+#campfire {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+}
+
+.flame {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at bottom, var(--fire-yellow), var(--fire-orange));
+    border-radius: 50% 50% 20% 20%;
+    filter: blur(5px);
+    animation: flicker 0.1s infinite alternate;
+}
+
+@keyframes flicker {
+    from { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    to { transform: translateX(-50%) scale(1.1); opacity: 1; }
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#status-bar {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 20px;
+    align-self: center;
+    font-size: 0.9rem;
+    pointer-events: auto; /* Allow clicks on status bar and children */
+}
+
+#puzzle-trigger-btn {
+    pointer-events: auto;
+    align-self: center;
+    margin-bottom: 50px;
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 10px;
+    position: relative;
+    max-width: 500px;
+    width: 95%;
+    text-align: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+/* Wordle Grid */
+#wordle-grid {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+    margin: 20px auto;
+    max-width: 300px;
+}
+
+.wordle-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.wordle-cell {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.wordle-cell.correct { background-color: #538d4e; border-color: #538d4e; }
+.wordle-cell.present { background-color: #b59f3b; border-color: #b59f3b; }
+.wordle-cell.absent { background-color: #3a3a3c; border-color: #3a3a3c; }
+
+#keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.key {
+    background: #818384;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 30px;
+    font-weight: bold;
+}
+
+/* Charcoal and Message Reveal */
+#charcoal-tool {
+    position: absolute;
+    bottom: 25%;
+    right: 20%;
+    color: #333;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto;
+    z-index: 5;
+}
+
+#charcoal-tool i { font-size: 2rem; }
+
+#message-indicator {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 100px;
+    z-index: 4;
+}
+
+#ash-pile {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    position: relative;
+}
+
+#ash-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.revealed-note {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--parchment);
+    color: #333;
+    padding: 10px;
+    font-family: 'Comic Sans MS', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: -1;
+}
+
+/* Debug Panel */
+#debug-panel {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#debug-controls {
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#debug-controls button {
+    background: #333;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+}
+
+#toggle-debug {
+    background: transparent;
+    opacity: 0.3;
+}
+#toggle-debug:hover { opacity: 1; }
+
+textarea {
+    width: 100%;
+    height: 100px;
+    background: var(--parchment);
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
