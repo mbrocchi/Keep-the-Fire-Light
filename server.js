@@ -106,10 +106,26 @@ app.post('/api/pair', auth, (req, res) => {
 // --- GAME ROUTES ---
 
 app.get('/api/state', auth, (req, res) => {
-    const data = getData();
-    const campsite = data.campsites.find(c => c.members.includes(req.user.username));
+    let data = getData();
+    const campsite = data.campsites.find(c => c.members.includes(req.user.username.toLowerCase()));
     
     if (!campsite) return res.json({ paired: false });
+
+    // Self-healing: Ensure every message has a unique ID and correct data structure
+    let modified = false;
+    campsite.messages.forEach((m, idx) => {
+        if (!m.id) {
+            m.id = `msg_healed_${Date.now()}_${idx}`;
+            modified = true;
+        }
+        if (!m.readBy) {
+            m.readBy = [];
+            modified = true;
+        }
+    });
+    if (modified) {
+        saveData(data);
+    }
 
     // Calculate decay
     const lastActivity = new Date(campsite.lastActivity);
@@ -120,16 +136,25 @@ app.get('/api/state', auth, (req, res) => {
 
     // Daily Word Status
     const today = new Date().toISOString().split('T')[0];
-    const user = data.users.find(u => u.username === req.user.username);
+    const user = data.users.find(u => u.username.toLowerCase() === req.user.username.toLowerCase());
     const completedToday = user.lastPuzzleDate === today;
+
+    // Filter messages: Only send messages that are NOT sent by this user, AND have NOT been read by this user
+    const usernameLower = req.user.username.toLowerCase();
+    const unreadPartnerMessages = campsite.messages.filter(m => {
+        const isFromPartner = m.sender.toLowerCase() !== usernameLower;
+        const hasNotRead = !m.readBy.map(u => u.toLowerCase()).includes(usernameLower);
+        return isFromPartner && hasNotRead;
+    });
 
     res.json({
         paired: true,
+        username: user.username, // Send actual username back
         fireLevel: campsite.fireLevel,
-        messages: campsite.messages, // Filter or handle ash reveal on client
+        messages: unreadPartnerMessages, // Only return unread partner messages!
         completedToday,
         partner: user.partner,
-        dailyWord: completedToday ? getDailyWord() : null // Only send word if completed? No, Wordle needs it for checking
+        dailyWord: completedToday ? getDailyWord() : null
     });
 });
 
@@ -173,12 +198,15 @@ app.post('/api/message', auth, (req, res) => {
 app.post('/api/message/read', auth, (req, res) => {
     const { messageId } = req.body;
     let data = getData();
-    const campsite = data.campsites.find(c => c.members.includes(req.user.username));
+    const campsite = data.campsites.find(c => c.members.includes(req.user.username.toLowerCase()));
     
     const message = campsite.messages.find(m => m.id === messageId);
-    if (message && !message.readBy.includes(req.user.username)) {
-        message.readBy.push(req.user.username);
-        saveData(data);
+    if (message) {
+        const usernameLower = req.user.username.toLowerCase();
+        if (!message.readBy.map(u => u.toLowerCase()).includes(usernameLower)) {
+            message.readBy.push(usernameLower);
+            saveData(data);
+        }
     }
     res.json({ success: true });
 });
@@ -187,12 +215,22 @@ app.post('/api/message/read', auth, (req, res) => {
 
 app.post('/api/debug/fast-forward', auth, (req, res) => {
     let data = getData();
-    const campsite = data.campsites.find(c => c.members.includes(req.user.username));
+    const campsite = data.campsites.find(c => c.members.includes(req.user.username.toLowerCase()));
+    
     // Set last activity to 24 hours ago and drop fire level
     const yesterday = new Date();
     yesterday.setHours(yesterday.getHours() - 24);
     campsite.lastActivity = yesterday.toISOString();
     campsite.fireLevel = 20;
+
+    // Fast-forward should also reset the daily puzzle status for both members so they can stoke the fire again
+    campsite.members.forEach(member => {
+        const u = data.users.find(user => user.username.toLowerCase() === member.toLowerCase());
+        if (u) {
+            u.lastPuzzleDate = null;
+        }
+    });
+
     saveData(data);
     res.json({ success: true });
 });

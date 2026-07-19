@@ -6,7 +6,7 @@
       "partner": "hayley",
       "lastLogin": "2026-07-18T00:30:58.924Z",
       "campsiteId": "camp_1784335220000",
-      "lastPuzzleDate": "2026-07-18"
+      "lastPuzzleDate": null
     },
     {
       "username": "hayley",
@@ -24,58 +24,81 @@
         "hayley",
         "marcello"
       ],
-      "fireLevel": 20,
-      "lastActivity": "2026-07-17T01:08:19.083Z",
+      "fireLevel": 100,
+      "lastActivity": "2026-07-19T00:55:15.120Z",
       "messages": [
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:43:44.522Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_0"
         },
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:43:51.518Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_1"
         },
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:43:52.664Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_2"
         },
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:43:57.943Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_3"
         },
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:43:59.019Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_4"
         },
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:45:09.105Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_5"
         },
         {
           "sender": "hayley",
           "text": "Thinking of you!",
           "timestamp": "2026-07-18T00:45:09.850Z",
-          "readBy": []
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_6"
         },
         {
           "sender": "hayley",
           "text": "Wuv u",
           "timestamp": "2026-07-18T00:49:38.720Z",
           "readBy": [
-            "hayley"
-          ]
+            "hayley",
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_7"
         },
         {
           "sender": "marcello",
@@ -83,15 +106,18 @@
           "timestamp": "2026-07-18T00:50:03.191Z",
           "readBy": [
             "marcello"
-          ]
+          ],
+          "id": "msg_healed_1784420393528_8"
         },
         {
           "sender": "hayley",
           "text": "Poopy head",
           "timestamp": "2026-07-18T00:51:31.591Z",
           "readBy": [
-            "hayley"
-          ]
+            "hayley",
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_9"
         },
         {
           "sender": "marcello",
@@ -99,12 +125,50 @@
           "timestamp": "2026-07-18T00:51:48.924Z",
           "readBy": [
             "marcello"
-          ]
+          ],
+          "id": "msg_healed_1784420393528_10"
         },
         {
           "sender": "marcello",
-          "text": "esfdsfdsfdsf",
+          "text": "esfds666666fdsfdsf",
           "timestamp": "2026-07-18T00:52:19.555Z",
+          "readBy": [
+            "marcello"
+          ],
+          "id": "msg_healed_1784420393528_11"
+        },
+        {
+          "id": "msg_sim_1784341647102",
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T02:27:27.102Z",
+          "readBy": [
+            "marcello"
+          ]
+        },
+        {
+          "id": "msg_sim_1784341647102",
+          "sender": "marcello",
+          "text": "Thinertertertertking of you!",
+          "timestamp": "2026-07-18T02:27:27.102Z",
+          "readBy": [
+            "marcello"
+          ]
+        },
+        {
+          "id": "msg_sim_1784341824834",
+          "sender": "hayley",
+          "text": "Thinking of you!",
+          "timestamp": "2026-07-18T02:30:24.834Z",
+          "readBy": [
+            "marcello"
+          ]
+        },
+        {
+          "id": "msg_sim_1784341932462",
+          "sender": "marcello",
+          "text": "Thiffffffnking of you!",
+          "timestamp": "2026-07-18T02:32:12.462Z",
           "readBy": [
             "marcello"
           ]

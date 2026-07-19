@@ -123,9 +123,8 @@ function showScreen(screenId) {
 function updateUI() {
     if (!gameState) return;
 
-    // Get username from cookie cleanly
-    const match = document.cookie.match(/(?:^|; )username=([^;]*)/);
-    const activeUser = match ? decodeURIComponent(match[1]) : "You";
+    // Use gameState.username returned securely from server state
+    const activeUser = gameState.username || "You";
     
     document.getElementById('user-display').textContent = activeUser;
     document.getElementById('partner-display').textContent = gameState.partner || "Partner";
@@ -148,22 +147,15 @@ function updateUI() {
     }
 
     // Messages / Ash Pile
-    const normalizedCurrentUser = activeUser.toLowerCase().trim();
-    
-    const unreadMessages = gameState.messages.filter(m => {
-        const senderLower = m.sender.toLowerCase().trim();
-        const readByLower = m.readBy.map(name => name.toLowerCase().trim());
-        // Show ONLY messages sent by the partner (not current user) and which current user hasn't read yet
-        return senderLower !== normalizedCurrentUser && !readByLower.includes(normalizedCurrentUser);
-    });
-
-    if (unreadMessages.length > 0) {
+    // The server is already doing the heavy lifting of filtering unread partner messages!
+    // We just show whatever unread messages are passed to us.
+    if (gameState.messages && gameState.messages.length > 0) {
         document.getElementById('message-indicator').classList.remove('hidden');
-        // Always show the latest unread message
-        const latestMessage = unreadMessages[unreadMessages.length - 1];
+        const latestMessage = gameState.messages[gameState.messages.length - 1];
         initAshReveal(latestMessage.text, latestMessage.id);
     } else {
         document.getElementById('message-indicator').classList.add('hidden');
+        activeMessageId = null;
     }
 }
 
@@ -369,62 +361,86 @@ function initAshReveal(text, messageId) {
     }
 
     let isDrawing = false;
-    let strokes = 0;
-    const strokeThreshold = 25; // Trigger read state after 25 scrub movements
+    
+    // Instead of simple stroke counts which can trigger without scrubbing much,
+    // let's divide the canvas into a small 8x4 grid of sectors.
+    // When 30% of these grid sectors have been touched, the message is marked as read!
+    // This makes the 30% threshold highly accurate and extremely satisfying to brush away.
+    const cols = 8;
+    const rows = 4;
+    const sectors = Array(cols * rows).fill(false);
+    const requiredSectors = Math.ceil(cols * rows * 0.3); // 30% of 32 = 10 sectors
 
     const scrub = (e) => {
         if (!isDrawing) return;
         const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-        const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        
+        if (clientX === undefined || clientY === undefined) return;
+        
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
         ctx.arc(x, y, 22, 0, Math.PI * 2);
         ctx.fill();
         
-        strokes++;
-        if (strokes >= strokeThreshold) {
-            markMessageRead(activeMessageId);
+        // Find which sector was scrubbed
+        const colIdx = Math.max(0, Math.min(cols - 1, Math.floor((x / canvas.width) * cols)));
+        const rowIdx = Math.max(0, Math.min(rows - 1, Math.floor((y / canvas.height) * rows)));
+        const sectorIdx = rowIdx * cols + colIdx;
+        
+        if (!sectors[sectorIdx]) {
+            sectors[sectorIdx] = true;
+            const clearedSectors = sectors.filter(s => s).length;
+            if (clearedSectors >= requiredSectors) {
+                markMessageRead(activeMessageId);
+            }
         }
     };
 
-    canvas.onmousedown = (e) => { isDrawing = true; scrub(e); };
+    const startDrawing = (e) => {
+        isDrawing = true;
+        scrub(e);
+    };
+
+    canvas.onmousedown = startDrawing;
     canvas.onmousemove = scrub;
-    window.onmouseup = () => isDrawing = false;
+    window.addEventListener('mouseup', () => { isDrawing = false; });
     
-    canvas.ontouchstart = (e) => { isDrawing = true; scrub(e); };
-    canvas.ontouchmove = (e) => { scrub(e); e.preventDefault(); };
-    canvas.ontouchend = () => isDrawing = false;
+    canvas.addEventListener('touchstart', (e) => {
+        isDrawing = true;
+        scrub(e);
+    }, { passive: true });
+    canvas.addEventListener('touchmove', (e) => {
+        scrub(e);
+    }, { passive: true });
+    window.addEventListener('touchend', () => { isDrawing = false; });
 }
 
 async function markMessageRead(messageId) {
     if (!messageId) return;
     
-    // Check if already read locally first to prevent duplicate API requests
-    const match = document.cookie.match(/(?:^|; )username=([^;]*)/);
-    const activeUser = match ? decodeURIComponent(match[1]) : "";
-    const normalizedCurrentUser = activeUser.toLowerCase().trim();
-    
-    const msg = gameState.messages.find(m => m.id === messageId);
-    if (msg && msg.readBy.map(n => n.toLowerCase().trim()).includes(normalizedCurrentUser)) {
-        return; // Already read
-    }
+    // Check if already marked read locally to avoid duplicate calls
+    if (!activeMessageId) return;
 
+    // Call API to mark as read permanently on server
     const res = await fetch('/api/message/read', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messageId })
     });
     if (res.ok) {
-        if (msg) {
-            msg.readBy.push(normalizedCurrentUser);
-        }
+        // Prevent re-triggering while fading
+        activeMessageId = null;
         
         // Softly clear indicator after a brief delay so they can read the rest of the text
         setTimeout(() => {
             document.getElementById('message-indicator').classList.add('hidden');
-            activeMessageId = null;
+            // Refresh full gameState from server to sync perfectly
+            checkAuth();
         }, 3000);
     }
 }
