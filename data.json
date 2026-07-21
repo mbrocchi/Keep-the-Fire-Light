@@ -6,7 +6,7 @@
       "partner": "hayley",
       "lastLogin": "2026-07-18T00:30:58.924Z",
       "campsiteId": "camp_1784335220000",
-      "lastPuzzleDate": null
+      "lastPuzzleDate": "2026-07-21"
     },
     {
       "username": "hayley",
@@ -14,7 +14,13 @@
       "partner": "marcello",
       "lastLogin": "2026-07-18T00:40:04.908Z",
       "campsiteId": "camp_1784335220000",
-      "lastPuzzleDate": "2026-07-18"
+      "lastPuzzleDate": null
+    },
+    {
+      "username": "test",
+      "password": "test",
+      "partner": null,
+      "lastLogin": "2026-07-20T03:19:52.179Z"
     }
   ],
   "campsites": [
@@ -24,8 +30,8 @@
         "hayley",
         "marcello"
       ],
-      "fireLevel": 100,
-      "lastActivity": "2026-07-19T00:55:15.120Z",
+      "fireLevel": 95,
+      "lastActivity": "2026-07-21T22:05:45.134Z",
       "messages": [
         {
           "sender": "hayley",
@@ -166,7 +172,7 @@
         },
         {
           "id": "msg_sim_1784341932462",
-          "sender": "marcello",
+          "sender": "hayley",
           "text": "Thiffffffnking of you!",
           "timestamp": "2026-07-18T02:32:12.462Z",
           "readBy": [

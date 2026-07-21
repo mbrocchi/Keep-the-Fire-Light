@@ -53,6 +53,31 @@ body {
     width: 90%;
 }
 
+.game-logo-large {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    margin: 0 auto 1.5rem auto;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(255, 111, 0, 0.4));
+}
+
+#game-logo-hud {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    pointer-events: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+    transition: transform 0.3s ease;
+}
+
+#game-logo-hud:hover {
+    transform: scale(1.15);
+}
+
 h1 {
     margin-bottom: 1rem;
     color: var(--fire-orange);
@@ -152,9 +177,74 @@ button:hover {
 }
 
 #puzzle-trigger-btn {
+    /* Inherits styling from #controls-panel buttons */
+}
+
+#controls-panel {
+    position: absolute;
+    top: 250px;
+    left: 20px;
+    width: 280px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 15;
     pointer-events: auto;
-    align-self: center;
-    margin-bottom: 50px;
+}
+
+.panel-title {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--fire-orange);
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+#controls-panel button {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#controls-panel button:hover {
+    background: var(--fire-orange);
+    color: white;
+    border-color: var(--fire-orange);
+    box-shadow: 0 0 10px rgba(255, 111, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+#controls-panel button#logout-btn {
+    background: rgba(220, 53, 69, 0.15);
+    border-color: rgba(220, 53, 69, 0.2);
+    color: #ff8080;
+    margin-top: 5px;
+}
+
+#controls-panel button#logout-btn:hover {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.4);
 }
 
 /* Modals */
@@ -176,7 +266,7 @@ button:hover {
     padding: 2rem;
     border-radius: 10px;
     position: relative;
-    max-width: 500px;
+    max-width: 600px; /* Controls the maximum width of the puzzle layout */
     width: 95%;
     text-align: center;
 }
@@ -222,11 +312,20 @@ button:hover {
 
 #keyboard {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap;       /* Allows Enter and Del to sit side-by-side */
     justify-content: center;
     gap: 5px;
     margin-top: 20px;
 }
+
+.keyboard-row {
+    display: flex;          /* This forces the keys inside to go horizontally */
+    justify-content: center; /* Centers the keys in the row */
+    gap: 5px;               /* Adds nice spacing between each key */
+    width: 100%;            /* Makes the row fill the keyboard width */
+    margin-bottom: 5px;     /* Space between the different rows */
+}
+
 
 .key {
     background: #818384;
@@ -234,24 +333,13 @@ button:hover {
     border-radius: 4px;
     cursor: pointer;
     min-width: 30px;
+    max-height:40px;
     font-weight: bold;
+    margin:5px
 }
 
 /* Charcoal and Message Reveal */
-#charcoal-tool {
-    position: absolute;
-    bottom: 25%;
-    right: 20%;
-    color: #333;
-    cursor: pointer;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    pointer-events: auto;
-    z-index: 5;
-}
-
-#charcoal-tool i { font-size: 2rem; }
+/* Old #charcoal-tool styling removed as it is now styled in the #controls-panel */
 
 #message-indicator {
     position: absolute;
@@ -268,6 +356,9 @@ button:hover {
     height: 100%;
     cursor: crosshair;
     position: relative;
+    top:170px;
+    left:24px
+
 }
 
 #ash-canvas {

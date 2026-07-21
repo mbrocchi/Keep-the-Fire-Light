@@ -13,6 +13,7 @@
         <!-- Login Screen -->
         <div id="login-screen" class="screen">
             <div class="cozy-card">
+                <img src="logo.png" class="game-logo-large" alt="Keep the Fire Light Logo">
                 <h1>Keep the Fire Light</h1>
                 <p>Enter your name to enter the woods.</p>
                 <input type="text" id="username-input" placeholder="Your Name">
@@ -24,6 +25,7 @@
         <!-- Pairing Screen -->
         <div id="pairing-screen" class="screen hidden">
             <div class="cozy-card">
+                <img src="logo.png" class="game-logo-large" alt="Keep the Fire Light Logo">
                 <h1>Find Your Partner</h1>
                 <p>Enter your partner's name to link your campsites.</p>
                 <input type="text" id="partner-input" placeholder="Partner's Name">
@@ -43,25 +45,32 @@
                     <div class="logs"></div>
                     <div class="embers"></div>
                 </div>
-                
-                <div id="charcoal-tool" class="hidden">
-                    <i class="fas fa-pencil-alt"></i>
-                    <span>Charcoal</span>
-                </div>
-
-                <div id="message-indicator" class="hidden">
-                    <div class="ash-pile" id="ash-pile">
-                        <canvas id="ash-canvas"></canvas>
-                    </div>
-                </div>
             </div>
 
             <div id="ui-overlay">
+                <img src="logo.png" class="game-logo-small" id="game-logo-hud" alt="Logo">
+                
+                <div id="controls-panel">
+                    <div class="panel-title">CAMP CONTROLS</div>
+                    <button id="puzzle-trigger-btn">
+                        <i class="fas fa-fire"></i> Tend the Fire
+                    </button>
+                    <button id="charcoal-tool" class="hidden">
+                        <i class="fas fa-pencil-alt"></i> Write a Note
+                    </button>
+                    <button id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                    <div id="message-indicator" class="hidden">
+                        <div class="ash-pile" id="ash-pile">
+                            <canvas id="ash-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="status-bar">
                     <span id="user-display"></span> & <span id="partner-display"></span>
-                    <button id="logout-btn" style="margin-left: 10px; padding: 5px 10px; font-size: 0.7rem;">Logout</button>
                 </div>
-                <button id="puzzle-trigger-btn">Tend the Fire</button>
             </div>
         </div>
 
