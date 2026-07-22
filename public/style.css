@@ -111,10 +111,10 @@ button:hover {
 /* Campfire Scene */
 #campfire-container {
     position: absolute;
-    top: 10%;
-    left: 15%;
-    width: 1920px;
-    height: 1024px;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background-image: url('background.png');
     background-size: cover;
     background-position: center;
