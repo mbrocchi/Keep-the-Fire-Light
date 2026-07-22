@@ -68,7 +68,23 @@ async function checkAuth() {
 async function login() {
     const username = document.getElementById('username-input').value.trim();
     const password = document.getElementById('password-input').value.trim();
+    const audio = new Audio('Outdoors.mp3');
+    const music = new Audio('music.mp3');
+    music.volume = 0.03;
+    audio.loop=true;
+    music.loop=true;
+
+
     if (!username || !password) return;
+
+    if (audio.paused) {
+      audio.play();
+      music.play();
+    } else {
+      audio.pause();
+      music.pause();
+    }
+
 
     const res = await fetch('/api/login', {
         method: 'POST',
@@ -89,6 +105,17 @@ async function login() {
 
 async function logout() {
     await fetch('/api/logout', { method: 'POST' });
+    const audio = new Audio('Outdoors.mp3');
+    const music = new Audio('music.mp3');
+
+    if (audio.paused) {
+      audio.play();
+      music.play();
+    } else {
+      audio.pause();
+      music.pause();
+    }
+  
     // Manually delete the cookie on client side if possible, just in case
     document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     gameState = null;
