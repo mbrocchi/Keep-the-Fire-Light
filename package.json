@@ -1,0 +1,28 @@
+{
+  "name": "keep-the-fire-light",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/sync-art.mjs",
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "prebuild": "node scripts/sync-art.mjs",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "lan": "node scripts/lan.mjs",
+    "seed": "node scripts/seed.mjs",
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "next": "^15.5.22",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.13",
+    "@types/node": "22.10.2",
+    "@types/react": "19.1.9",
+    "@types/react-dom": "19.1.7",
+    "tailwindcss": "4.1.13",
+    "typescript": "5.7.3"
+  }
+}

@@ -1,0 +1,349 @@
+@import "tailwindcss";
+
+@theme {
+  --color-parchment: #ede3cb;
+  --color-cream: #f5ead2;
+  --color-teal: #1d525c;
+  --color-teal-deep: #0f343d;
+  --color-night: #12283c;
+  --color-ember: #e2622b;
+  --color-gold: #f2a93b;
+  --color-core: #ffe9a8;
+  --color-moss: #2e4a34;
+  --color-matte: #e5dac0;
+  --color-ink: #241c14;
+
+  --font-display: var(--font-archivo), "Arial Black", system-ui, sans-serif;
+  --font-body: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+}
+
+:root {
+  /* Published every frame by the campfire renderer; everything warm reads
+     these, so the whole interface is lit by the same flame. */
+  --fire-intensity: 0;
+  --fire-flicker: 1;
+  --fire-glow: 0;
+
+  --stitch: rgba(245, 234, 210, 0.55);
+  color-scheme: dark;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-matte);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------- layout - */
+
+.ktfl-frame {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Space claimed by a fixed action bar. Centring happens in what's left, so
+     the picture is never overlapped by it. */
+  padding-bottom: var(--stage-reserve, 0px);
+  /* A hint of the fire spilling onto the matte around the picture. */
+  background:
+    radial-gradient(
+      ellipse 34% 22% at 50% 82%,
+      rgba(226, 122, 48, calc(0.07 * var(--fire-glow))),
+      transparent 72%
+    ),
+    var(--color-matte);
+}
+
+.ktfl-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Layer above the artwork that scrolls, for HUD and sheets. */
+.ktfl-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------- surfaces */
+
+/* An embroidered patch: felt fill, stitched rim, warm rim-light from the fire. */
+.patch {
+  position: relative;
+  border-radius: 14px;
+  background: linear-gradient(
+    170deg,
+    color-mix(in srgb, var(--color-teal) 92%, black) 0%,
+    var(--color-teal-deep) 100%
+  );
+  border: 2px solid color-mix(in srgb, var(--color-teal) 60%, black);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 6px 18px rgba(0, 0, 0, 0.4),
+    0 0 calc(14px * var(--fire-glow)) rgba(242, 169, 59, calc(0.5 * var(--fire-glow)));
+}
+
+.patch::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 9px;
+  border: 1.5px dashed var(--stitch);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.parchment {
+  position: relative;
+  border-radius: 12px;
+  background: linear-gradient(168deg, #f3e8cf 0%, #e3d4b3 100%);
+  color: var(--color-ink);
+  border: 1.5px solid #c2ac82;
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.parchment::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 8px;
+  border: 1px dashed rgba(120, 96, 54, 0.35);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.btn {
+  --btn-bg: var(--color-teal);
+  --btn-fg: var(--color-cream);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 2px solid rgba(0, 0, 0, 0.28);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.22),
+    0 6px 16px rgba(0, 0, 0, 0.42);
+  cursor: pointer;
+  transition: transform 90ms ease, filter 160ms ease, box-shadow 160ms ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 999px;
+  border: 1.5px dashed var(--stitch);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ember {
+  --btn-bg: linear-gradient(168deg, #f0873a 0%, #d5501f 100%);
+  --btn-fg: #fff5e0;
+  text-shadow: 0 1px 2px rgba(120, 40, 0, 0.55);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.24),
+    0 6px 16px rgba(0, 0, 0, 0.42),
+    0 0 calc(26px * var(--fire-glow)) rgba(242, 140, 45, calc(0.75 * var(--fire-glow)));
+}
+
+.btn-cream {
+  --btn-bg: linear-gradient(168deg, #f7edd6 0%, #ddcaa2 100%);
+  --btn-fg: #24343a;
+  --stitch: rgba(60, 80, 86, 0.4);
+  text-shadow: none;
+}
+
+.btn-quiet {
+  --btn-bg: rgba(18, 40, 48, 0.72);
+  --btn-fg: var(--color-cream);
+  backdrop-filter: blur(6px);
+  border-color: rgba(245, 234, 210, 0.28);
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+}
+
+/* ----------------------------------------------------------------- fields */
+
+.field {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background: rgba(9, 26, 32, 0.72);
+  border: 2px solid rgba(245, 234, 210, 0.24);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.field::placeholder {
+  color: rgba(245, 234, 210, 0.42);
+}
+
+.field:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(242, 169, 59, 0.2);
+}
+
+/* ------------------------------------------------------------ typography  */
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.embroidered {
+  color: var(--color-cream);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.4),
+    0 2px 5px rgba(0, 0, 0, 0.55);
+}
+
+/* Text that catches the firelight. */
+.lit {
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.7),
+    0 0 calc(16px * var(--fire-glow)) rgba(255, 186, 92, calc(0.85 * var(--fire-glow)));
+}
+
+/* -------------------------------------------------------------- animation */
+
+@keyframes ktfl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: ktfl-rise 380ms cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+@keyframes ktfl-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+.shake {
+  animation: ktfl-shake 520ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Tile flip. The colour swap happens at the midpoint, while the face is edge
+   on, so the tile appears to turn over and reveal its answer. */
+@keyframes ktfl-reveal {
+  0% {
+    transform: rotateX(0deg);
+  }
+  49.99% {
+    transform: rotateX(90deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+    background: var(--tile-final);
+    border-color: transparent;
+    color: #fdf6e6;
+  }
+  100% {
+    transform: rotateX(0deg);
+    background: var(--tile-final);
+    border-color: transparent;
+    color: #fdf6e6;
+  }
+}
+
+@keyframes ktfl-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+.pop {
+  animation: ktfl-pop 140ms ease-out;
+}
+
+/* ---------------------------------------------------------------- scroll  */
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 234, 210, 0.28) transparent;
+}
+
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(245, 234, 210, 0.28);
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

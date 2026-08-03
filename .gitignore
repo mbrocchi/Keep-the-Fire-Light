@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Runtime store + generated secret
+data/db.json
+data/.secret
+
+# Art is synced from Mockup/ at predev; it is a build artifact.
+public/art/
+
+.env*.local
+.DS_Store
